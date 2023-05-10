@@ -40,6 +40,7 @@ public class AuthController {
         return authenticationService.saveUser(user);
     }
 
+
     @PostMapping("/roles")
     public Role saveRole(@RequestBody Role role) {
         return authenticationService.saveRole(role.getNomRole());

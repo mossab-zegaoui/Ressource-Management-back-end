@@ -1,6 +1,7 @@
 package com.resourcesManager.backend.resourcesManager.controllers;
 
 import com.resourcesManager.backend.resourcesManager.entities.Panne;
+import com.resourcesManager.backend.resourcesManager.entities.PanneAvecRessource;
 import com.resourcesManager.backend.resourcesManager.services.PanneService;
 import org.springframework.web.bind.annotation.*;
 
@@ -8,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/pannes")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin("*")
 public class PanneController {
 
     private final PanneService panneService;
@@ -20,6 +21,10 @@ public class PanneController {
     @GetMapping("")
     public List<Panne> getAllPannes() {
         return panneService.getAllPannes();
+    }
+    @GetMapping("/pannesAvecRessources")
+    public List<PanneAvecRessource> getNotTreatedPanne(){
+        return panneService.getNotTreatedPanne();
     }
 
     @PostMapping()

@@ -22,6 +22,10 @@ public class NotifFournisseurController {
     public List<NotifFournisseur> getNotifsFournisseur(@PathVariable String id) {
         return notifFournisseurService.getNotifsByIdFournisseurNotSeen(id);
     }
+    @GetMapping("/fournisseur")
+    public List<NotifFournisseur> getAllNotifsFournisseur(){
+        return notifFournisseurService.getAllNotifications();
+    }
 
     @PutMapping("/{id}")
     public void setNotifFournisseurSeen(@PathVariable Long id) {

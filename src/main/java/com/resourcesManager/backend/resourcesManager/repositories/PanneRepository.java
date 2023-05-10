@@ -13,5 +13,7 @@ public interface PanneRepository extends JpaRepository<Panne, Long> {
     List<Panne> findByConstatIsNotNullAndDemandeIsNull();
     List<Panne> findPanneByIsTreatedFalse();
     List<Panne> findByDemandeIsNotNull();
+    List<Panne> findAllByIsTreatedFalse();
+
 
 }

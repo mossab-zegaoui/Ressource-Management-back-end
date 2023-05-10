@@ -1,5 +1,6 @@
 package com.resourcesManager.backend.resourcesManager.controllers;
 
+import com.resourcesManager.backend.resourcesManager.entities.PanneAvecRessource;
 import com.resourcesManager.backend.resourcesManager.entities.Technicien;
 import com.resourcesManager.backend.resourcesManager.services.TechnicienServiceImpl;
 import org.springframework.http.HttpStatus;
@@ -39,6 +40,7 @@ public class TechnicienController {
         technicien.setId(id);
         return technicienServiceImpl.updateTechnicien(technicien);
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteMTechnicien(@PathVariable String id) {

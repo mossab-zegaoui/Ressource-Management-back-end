@@ -71,7 +71,7 @@ public class AuthenticationServiceImplTest {
         user2.setNom("anas");
         user2.setPassword("user66");
         user2.setUsername("moudariga");
-        List<User> users = Arrays.asList(user1, user2);
+        List<User> users = List.of(user1, user2);
 //        When
         when(userRepository.findAll()).thenReturn(users);
         List<User> expectedUsers = authenticationService.getAllUsers();
@@ -339,7 +339,7 @@ public class AuthenticationServiceImplTest {
     }
 
     @Test
-    public void testIsAccountBlocked_withBlockedAccount(){
+    public void testIsAccountBlocked_withBlockedAccount() {
         // Arrange
         String userName = "testUser";
         String motifDeBlockage = "Motif de blockage";

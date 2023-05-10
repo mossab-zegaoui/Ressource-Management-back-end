@@ -10,5 +10,6 @@ import java.util.List;
 public interface NotifFournisseurRepository extends JpaRepository<NotifFournisseur, Long> {
 
     public List<NotifFournisseur> getNotifFournisseurByIdFournisseurAndIsSeenIsFalse(String idFournisseur);
+    List<NotifFournisseur> findAllByAndIsSeenIsFalse();
 
 }

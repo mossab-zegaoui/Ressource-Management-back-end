@@ -1,7 +1,5 @@
 package com.resourcesManager.backend.resourcesManager.security;
 
-import com.resourcesManager.backend.resourcesManager.exceptions.InvalidCredentialsException;
-import com.resourcesManager.backend.resourcesManager.repositories.TokenRepository;
 import com.resourcesManager.backend.resourcesManager.services.CustomUserDetailsService;
 import com.resourcesManager.backend.resourcesManager.services.JwtService;
 import jakarta.servlet.FilterChain;

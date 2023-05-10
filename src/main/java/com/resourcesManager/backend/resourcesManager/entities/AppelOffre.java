@@ -19,7 +19,7 @@ public class AppelOffre {
     private Long id;
     private Date datePub;
     private Boolean isAffected;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private Collection<Besoin> besoins= new ArrayList<>();
 
 

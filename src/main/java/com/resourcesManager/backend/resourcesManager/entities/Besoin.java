@@ -16,7 +16,9 @@ import java.util.Date;
 
 @Entity
 @Builder
-@Data @NoArgsConstructor @AllArgsConstructor
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Besoin {
 
     @Id
@@ -24,10 +26,10 @@ public class Besoin {
     private Long id;
     private Date dateDemande;
     private Date dateAffectation;
-    private Boolean isAffected=false;
+    private Boolean isAffected = false;
     private String idMembreDepartement;
-    private  Long idDepartement;
-    private  Boolean isBesoinInAppelOffre=false;
+    private Long idDepartement;
+    private Boolean isBesoinInAppelOffre = false;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<Ordinateur> ordinateurs = new ArrayList<>();
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)

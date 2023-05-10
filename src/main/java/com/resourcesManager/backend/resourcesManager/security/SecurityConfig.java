@@ -3,9 +3,10 @@ package com.resourcesManager.backend.resourcesManager.security;
 
 import com.resourcesManager.backend.resourcesManager.services.LogoutService;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -18,11 +19,18 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
 public class SecurityConfig {
     private final AuthenticationProvider authenticationProvider;
     private final JwtAuthenticationFilter authenticationFilter;
     private final LogoutService logoutHandler;
+
+    public SecurityConfig(AuthenticationProvider authenticationProvider,
+                          JwtAuthenticationFilter authenticationFilter,
+                          LogoutService logoutHandler) {
+        this.authenticationProvider = authenticationProvider;
+        this.authenticationFilter = authenticationFilter;
+        this.logoutHandler = logoutHandler;
+    }
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -36,7 +44,7 @@ public class SecurityConfig {
 //                        .requestMatchers("/api/v1/appelOffre/**", "/api/v1/appelOffre/**/**")
 //                        .hasAnyAuthority("RESPONSABLE", "FOURNISSEUR")
                         .anyRequest()
-                                .authenticated()
+                                .permitAll()
                 )
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

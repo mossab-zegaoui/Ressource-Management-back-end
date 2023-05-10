@@ -1,7 +1,9 @@
 package com.resourcesManager.backend.resourcesManager.services;
 
 import com.resourcesManager.backend.resourcesManager.entities.Departement;
+import com.resourcesManager.backend.resourcesManager.exceptions.NotFoundException;
 import com.resourcesManager.backend.resourcesManager.repositories.DepartementRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -12,13 +14,10 @@ import java.util.List;
 
 @Service
 @Transactional
+@AllArgsConstructor
 public class DepartementServiceImpl implements DepartementService {
 
     private final DepartementRepository departementRepository;
-
-    public DepartementServiceImpl(DepartementRepository departementRepository) {
-        this.departementRepository = departementRepository;
-    }
 
     @Override
     public List<Departement> getAllDepartements() {
@@ -34,7 +33,7 @@ public class DepartementServiceImpl implements DepartementService {
     @Override
     public Departement getDepartementById(Long id) {
         return departementRepository.findById(id).orElseThrow(() ->
-            new RuntimeException("Le departement avec l'id = " + id + " est introuvable")
+            new NotFoundException("Le departement avec l'id = " + id + " est introuvable")
         );
     }
 
