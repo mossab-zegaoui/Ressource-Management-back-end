@@ -40,6 +40,7 @@ public class TechnicienController {
         return technicienServiceImpl.updateTechnicien(technicien);
     }
 
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteMTechnicien(@PathVariable String id) {
         technicienServiceImpl.deleteTechnicien(id);

@@ -2,6 +2,7 @@ package com.resourcesManager.backend.resourcesManager.services;
 
 
 import com.resourcesManager.backend.resourcesManager.entities.Panne;
+import com.resourcesManager.backend.resourcesManager.entities.PanneAvecRessource;
 
 import java.util.List;
 
@@ -15,4 +16,5 @@ public interface PanneService {
     List<Panne> getPannesNotTreated();
     List<Panne> getPanneWithDemandeNotNull();
 
+    List<PanneAvecRessource> getNotTreatedPanne();
 }

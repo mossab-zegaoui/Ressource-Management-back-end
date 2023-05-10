@@ -2,7 +2,7 @@ package com.resourcesManager.backend.resourcesManager.security;
 
 import com.resourcesManager.backend.resourcesManager.repositories.UserRepository;
 import com.resourcesManager.backend.resourcesManager.services.CustomUserDetailsService;
-import lombok.RequiredArgsConstructor;
+import com.resourcesManager.backend.resourcesManager.services.JwtService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,9 +14,18 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
-@RequiredArgsConstructor
 public class ApplicationConfig {
     private final UserRepository userRepository;
+
+    @Bean
+    public JwtService jwtService() {
+        return new JwtService();
+    }
+
+    public ApplicationConfig(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
 
     @Bean
     public UserDetailsService userDetailsService() {
@@ -40,4 +49,6 @@ public class ApplicationConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
+
+
 }

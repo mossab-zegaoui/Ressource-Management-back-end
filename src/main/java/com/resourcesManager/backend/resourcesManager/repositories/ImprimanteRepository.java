@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
 public interface ImprimanteRepository extends JpaRepository<Imprimante, Long> {
 
     public List<Imprimante> getImprimanteByIdMembreDepartement(String id);

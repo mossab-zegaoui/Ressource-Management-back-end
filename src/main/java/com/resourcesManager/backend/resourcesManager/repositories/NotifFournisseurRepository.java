@@ -6,9 +6,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
 public interface NotifFournisseurRepository extends JpaRepository<NotifFournisseur, Long> {
 
     public List<NotifFournisseur> getNotifFournisseurByIdFournisseurAndIsSeenIsFalse(String idFournisseur);
+    List<NotifFournisseur> findAllByAndIsSeenIsFalse();
 
 }

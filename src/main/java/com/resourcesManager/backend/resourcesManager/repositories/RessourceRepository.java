@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
 public interface RessourceRepository extends JpaRepository<Ressource, Long> {
 
     public List<Ressource> getRessourceByIdDepartement(Long id);

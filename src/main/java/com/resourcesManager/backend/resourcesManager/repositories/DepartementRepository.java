@@ -12,7 +12,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
 public interface DepartementRepository extends JpaRepository<Departement, Long> {
 
     Page<Departement> findAll(Pageable pageable);

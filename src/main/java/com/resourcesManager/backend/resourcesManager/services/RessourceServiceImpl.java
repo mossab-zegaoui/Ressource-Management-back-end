@@ -4,20 +4,18 @@ import com.resourcesManager.backend.resourcesManager.entities.RessourceFournisse
 import com.resourcesManager.backend.resourcesManager.repositories.ResourceFournisseurRepository;
 import com.resourcesManager.backend.resourcesManager.entities.Ressource;
 import com.resourcesManager.backend.resourcesManager.repositories.RessourceRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@AllArgsConstructor
+
 public class RessourceServiceImpl implements RessourceService {
 
     private final RessourceRepository ressourceRepository;
     private  final ResourceFournisseurRepository resourceFournisseurRepository;
-
-    public RessourceServiceImpl(RessourceRepository ressourceRepository, ResourceFournisseurRepository resourceFournisseurRepository) {
-        this.ressourceRepository = ressourceRepository;
-        this.resourceFournisseurRepository = resourceFournisseurRepository;
-    }
 
     @Override
     public List<Ressource> getAllRessources() {

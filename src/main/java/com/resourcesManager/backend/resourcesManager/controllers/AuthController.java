@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/v1/users")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @AllArgsConstructor
 public class AuthController {
     private final AuthenticationServiceImpl authenticationService;
@@ -39,6 +39,7 @@ public class AuthController {
     public User saveUser(@RequestBody User user) {
         return authenticationService.saveUser(user);
     }
+
 
     @PostMapping("/roles")
     public Role saveRole(@RequestBody Role role) {

@@ -17,6 +17,7 @@ import com.resourcesManager.backend.resourcesManager.repositories.TokenRepositor
 import com.resourcesManager.backend.resourcesManager.repositories.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
@@ -74,8 +75,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new EntityAlreadyExistsException("Usename:" + user.getUsername() + " already exists !! Try another username");
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         Role role = roleRepository.findRoleByNomRole("USER");
-        user.setRoles(new ArrayList<>());
-        user.getRoles().add(role);
+        user.setRoles(List.of(role));
+        return userRepository.save(user);
+    }
+
+    @Override
+    public User saveResponsable(User user) {
+        User existUser = userRepository.findUserByUsername(user.getUsername());
+        if (existUser != null)
+            throw new EntityAlreadyExistsException("Usename:" + user.getUsername() + " already exists !! Try another username");
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        Role role = roleRepository.findRoleByNomRole("responsable");
+        user.setRoles(List.of(role));
         return userRepository.save(user);
     }
 
@@ -86,8 +97,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new EntityAlreadyExistsException("Username:" + existFournisseur.getUsername() + " already exists !! Try another username");
         fournisseur.setPassword(passwordEncoder.encode(fournisseur.getPassword()));
         Role role = saveRole("fournisseur");
-        fournisseur.setRoles(new ArrayList<>());
-        fournisseur.getRoles().add(role);
+        fournisseur.setRoles(List.of(role));
         return fournisseurRepository.save(fournisseur);
     }
 
@@ -101,13 +111,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public Role saveRole(String roleName) {
         Role role = roleRepository.findRoleByNomRole(roleName);
-        if (role == null){
-            Role savedRole = Role.builder()
+        if (role == null) {
+            role = Role.builder()
                     .nomRole(roleName)
                     .build();
-            roleRepository.save(savedRole);
+            roleRepository.save(role);
         }
-        return roleRepository.findRoleByNomRole(roleName);
+        return role;
     }
 
     @Override

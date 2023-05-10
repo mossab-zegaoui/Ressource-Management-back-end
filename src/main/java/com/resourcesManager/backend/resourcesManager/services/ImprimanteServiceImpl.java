@@ -1,21 +1,19 @@
 package com.resourcesManager.backend.resourcesManager.services;
 
-import com.resourcesManager.backend.resourcesManager.entities.Besoin;
 import com.resourcesManager.backend.resourcesManager.entities.Imprimante;
-import com.resourcesManager.backend.resourcesManager.entities.Ordinateur;
+import com.resourcesManager.backend.resourcesManager.exceptions.NotFoundException;
 import com.resourcesManager.backend.resourcesManager.repositories.ImprimanteRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
+
 public class ImprimanteServiceImpl implements ImprimanteService {
 
     private final ImprimanteRepository imprimanteRepository;
-    public ImprimanteServiceImpl(ImprimanteRepository imprimanteRepository) {
-        this.imprimanteRepository = imprimanteRepository;
-    }
 
     @Override
     public Imprimante addImprimante(Imprimante imprimante) {
@@ -25,39 +23,36 @@ public class ImprimanteServiceImpl implements ImprimanteService {
     @Override
     public List<Imprimante> getAllImprimantes() {
         List<Imprimante> imprimantes = imprimanteRepository.findAll();
-        List<Imprimante> imprimanteList = filterImprimantes(imprimantes);
-        return imprimanteList;
+        return filterImprimantes(imprimantes);
     }
 
     @Override
     public List<Imprimante> getImprimantesByMembreDepartement(String id) {
         List<Imprimante> imprimantes = imprimanteRepository.getImprimanteByIdMembreDepartement(id);
-        List<Imprimante> imprimanteList = filterImprimantes(imprimantes);
-        return imprimanteList;
+        return filterImprimantes(imprimantes);
     }
 
     @Override
     public List<Imprimante> getImprimantesByDepartement(Long id) {
         List<Imprimante> imprimantes = imprimanteRepository.getImprimanteByIdDepartement(id);
-        List<Imprimante> imprimanteList = filterImprimantes(imprimantes);
-        return imprimanteList;
+        return filterImprimantes(imprimantes);
     }
 
     @Override
     public List<Imprimante> getImprimantesByFournisseur(String id) {
         List<Imprimante> imprimantes = imprimanteRepository.getImprimanteByIdFournisseur(id);
-        List<Imprimante> imprimanteList = filterImprimantes(imprimantes);
-        return imprimanteList;
+        return filterImprimantes(imprimantes);
     }
 
     @Override
     public Imprimante getImprimante(Long id) {
         Imprimante imprimante = imprimanteRepository.findById(id).orElseThrow(() ->
-                new RuntimeException("L'imprimante avec l'id = " + id + " est introuvable")
+                new NotFoundException("L'imprimante avec l'id = " + id + " est introuvable")
         );
-        if(imprimante.getIsDeleted() == false)
-            return imprimante;
-        throw new RuntimeException("L'imprimante avec l'id = " + id + " est introuvable");
+        if (imprimante.getIsDeleted())
+            throw new NotFoundException("L'imprimante avec l'id = " + id + " est supprime");
+        return imprimante;
+
     }
 
     @Override
@@ -73,23 +68,23 @@ public class ImprimanteServiceImpl implements ImprimanteService {
     }
 
     public List<Imprimante> filterImprimantes(List<Imprimante> imprimantes) {
-        List<Imprimante> imprimanteList = new ArrayList<>();
-        for(Imprimante imprimante: imprimantes) {
-            if(imprimante.getType().equals("Imprimante") && imprimante.getIsDeleted() == false)
-                imprimanteList.add(imprimante);
-        }
+        List<Imprimante> imprimanteList = imprimantes.stream()
+                .filter(imprimante -> "Imprimante".equals(imprimante.getType()))
+                .filter(imprimante -> !imprimante.getIsDeleted())
+                .toList();
+
         return imprimanteList;
     }
 
     @Override
     public List<Imprimante> getImprimantesLivrees() {
-        List<Imprimante> imprimanteNonLivre=filterImprimantes(imprimanteRepository.findAllByCodeBarreIsNullAndMarqueIsNotNull());
+        List<Imprimante> imprimanteNonLivre = filterImprimantes(imprimanteRepository.findAllByCodeBarreIsNullAndMarqueIsNotNull());
         return imprimanteNonLivre;
     }
 
     @Override
     public List<Imprimante> getImprimantesDisponibles() {
-        List<Imprimante> imprimanteDisponible=filterImprimantes(imprimanteRepository.findAllByCodeBarreIsNotNull());
+        List<Imprimante> imprimanteDisponible = filterImprimantes(imprimanteRepository.findAllByCodeBarreIsNotNull());
         return imprimanteDisponible;
     }
 

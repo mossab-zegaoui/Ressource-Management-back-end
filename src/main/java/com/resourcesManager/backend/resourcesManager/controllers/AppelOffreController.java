@@ -5,6 +5,7 @@ import com.resourcesManager.backend.resourcesManager.services.AppelOffreService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/appelOffre")
 @CrossOrigin("*")
@@ -26,21 +27,13 @@ public class AppelOffreController {
         return appelOffreService.getAppelOffre(id);
     }
 
-    @PostMapping("/creer")
-    AppelOffre creerAppelOffre(){
-        return appelOffreService.creerAppelOffre();
-    }
-
-    @PutMapping("/publier/{id}")
-    void publierAppelOffre( @PathVariable Long id){
-        System.out.println("Hello im in publier");
-        appelOffreService.publierAppelOffre(id);
+    @PostMapping("/publier")
+    void publierAppelOffre(@RequestBody AppelOffre appelOffre) {
+        appelOffreService.publierAppelOffre(appelOffre);
     }
 
     @DeleteMapping("/{id}")
-    void deleteAppelOffre(@PathVariable Long id){
-
-        System.out.println("Hello");
+    void deleteAppelOffre(@PathVariable Long id) {
         appelOffreService.deleteAppelOffre(id);
     }
 

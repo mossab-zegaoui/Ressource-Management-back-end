@@ -6,53 +6,36 @@ import com.resourcesManager.backend.resourcesManager.entities.MembreDepartement;
 import com.resourcesManager.backend.resourcesManager.exceptions.NotFoundException;
 import com.resourcesManager.backend.resourcesManager.repositories.DemandeRepository;
 import com.resourcesManager.backend.resourcesManager.repositories.DepartementRepository;
-import com.resourcesManager.backend.resourcesManager.repositories.MembreDepartementRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class DemandeServiceImpl implements DemandeService {
 
     private final DemandeRepository demandeRepository;
-    private final MembreDepartementRepository membreDepartementRepository;
 
     private final DepartementRepository departementRepository;
     private final MembreDepartementService membreDepartementService;
 
-    public DemandeServiceImpl(DemandeRepository demandeRepository,
-                              MembreDepartementRepository membreDepartementRepository,
-                              DepartementRepository departementRepository,
-                              MembreDepartementService membreDepartementService) {
-        this.demandeRepository = demandeRepository;
-        this.membreDepartementRepository = membreDepartementRepository;
-        this.departementRepository = departementRepository;
-        this.membreDepartementService = membreDepartementService;
-    }
-
     @Override
     public void createDemande(Long idDepartement) {
-        ArrayList<Demande> demandes = new ArrayList<>();
-        List<MembreDepartement> membresDepartement = this.membreDepartementService.getMembresByIdDepartement(idDepartement);
-        for (MembreDepartement membre : membresDepartement) {
-            System.err.println("Creating demandes");
-            if (membre.getRoles().stream().anyMatch(r -> r.getNomRole().equals("CHEF_DEP"))) {
-                continue;
-            }
-            Demande demande = Demande.builder()
-                    .message("Envoyez vos besoins")
-                    .dateDemande(Date.valueOf(LocalDate.now()))
-                    .idDepartement(idDepartement)
-                    .idMembreDepartement(membre.getId())
-                    .isSeen(false)
-                    .build();
-            demandes.add(demande);
-        }
-        System.err.println(demandes.size());
-        System.err.println("Saving demandes");
+        List<MembreDepartement> membresDepartement = membreDepartementService.getMembresByIdDepartement(idDepartement);
+        membresDepartement.removeIf(membre -> membre.getRoles().stream().anyMatch(r -> r.getNomRole().equals("CHEF_DEP")));
+        List<Demande> demandes = membresDepartement.stream()
+                .map(membre -> Demande.builder()
+                        .message("Envoyez vos besoins")
+                        .dateDemande(Date.valueOf(LocalDate.now()))
+                        .idDepartement(idDepartement)
+                        .idMembreDepartement(membre.getId())
+                        .isSeen(false)
+                        .build())
+                .collect(Collectors.toList());
         demandeRepository.saveAll(demandes);
     }
 
@@ -60,7 +43,7 @@ public class DemandeServiceImpl implements DemandeService {
     public Long getDepartementIdByUserId(String userId) {
 
         Departement departement = departementRepository
-                .getDepartementIdByUserId(userId).orElseThrow(() -> new NotFoundException("cannot find departement of user: id" + userId + " not found"));
+                .getDepartementIdByUserId(userId).orElseThrow(() -> new NotFoundException("cannot find departement of user: id" + userId ));
 
         return departement.getId();
     }
@@ -68,7 +51,7 @@ public class DemandeServiceImpl implements DemandeService {
     @Override
     public Demande demandeSeen(Long id) {
         Demande demande = demandeRepository.findById(id).orElseThrow(() ->
-                new RuntimeException("La demande avec l'id = " + id + " est introuvables")
+                new NotFoundException("La demande avec l'id = " + id + " est introuvable")
         );
         demande.setIsSeen(true);
         return demandeRepository.save(demande);

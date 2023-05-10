@@ -6,11 +6,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
 public interface DemandeRepository extends JpaRepository<Demande, Long> {
 
-    public List<Demande> findAllByIdMembreDepartement(String id);
+    List<Demande> findAllByIdMembreDepartement(String id);
 
-    public List<Demande> findAllByIdDepartement(Long id);
+    List<Demande> findAllByIdDepartement(Long id);
 
 }

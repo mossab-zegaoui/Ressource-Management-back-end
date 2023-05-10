@@ -20,6 +20,8 @@ public interface AuthenticationService {
 
     AuthResponse authenticate(AuthRequest request) throws InvalidCredentialsException;
 
+    User saveResponsable(User user);
+
     Fournisseur registerFournisseur(Fournisseur fournisseur);
 
     User updateUser(User user);
